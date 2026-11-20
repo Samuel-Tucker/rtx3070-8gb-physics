@@ -1,0 +1,14 @@
+{
+  "track": 3, "name": "1-Bit Parseval FWHT Sign-KV + __popc Screening",
+  "results": [
+    {"S":8192,"M":1,"fp16_gddr_us":989.5,"pcie_spill_us":5208.7,"sign_kv_us":262.9,"speedup_vs_gddr_fp16":3.76,"speedup_vs_pcie_spill":19.8,"survived_keys":16,"survived_pct":0.20,"needle_recall_top5pct":1.000,"out_cos":0.7772,"full36L_fp16_kv_gib":1.12,"full36L_1bK_2bV_gib":0.12},
+    {"S":8192,"M":32,"fp16_gddr_us":3018.8,"pcie_spill_us":5208.7,"sign_kv_us":1344.9,"speedup_vs_gddr_fp16":2.24,"speedup_vs_pcie_spill":3.9,"survived_keys":16,"survived_pct":0.20,"needle_recall_top5pct":1.000,"out_cos":0.7772,"full36L_fp16_kv_gib":1.12,"full36L_1bK_2bV_gib":0.12},
+    {"S":8192,"M":64,"fp16_gddr_us":5033.6,"pcie_spill_us":5208.7,"sign_kv_us":2642.3,"speedup_vs_gddr_fp16":1.90,"speedup_vs_pcie_spill":2.0,"survived_keys":16,"survived_pct":0.20,"needle_recall_top5pct":1.000,"out_cos":0.7772,"full36L_fp16_kv_gib":1.12,"full36L_1bK_2bV_gib":0.12},
+    {"S":32768,"M":1,"fp16_gddr_us":3280.7,"pcie_spill_us":20874.9,"sign_kv_us":312.4,"speedup_vs_gddr_fp16":10.50,"speedup_vs_pcie_spill":66.8,"survived_keys":16,"survived_pct":0.05,"needle_recall_top5pct":1.000,"out_cos":0.8722,"full36L_fp16_kv_gib":4.50,"full36L_1bK_2bV_gib":0.47},
+    {"S":32768,"M":32,"fp16_gddr_us":11456.6,"pcie_spill_us":20874.9,"sign_kv_us":2501.5,"speedup_vs_gddr_fp16":4.58,"speedup_vs_pcie_spill":8.3,"survived_keys":16,"survived_pct":0.05,"needle_recall_top5pct":1.000,"out_cos":0.8722,"full36L_fp16_kv_gib":4.50,"full36L_1bK_2bV_gib":0.47},
+    {"S":32768,"M":64,"fp16_gddr_us":20337.2,"pcie_spill_us":20874.9,"sign_kv_us":5421.2,"speedup_vs_gddr_fp16":3.75,"speedup_vs_pcie_spill":3.9,"survived_keys":16,"survived_pct":0.05,"needle_recall_top5pct":1.000,"out_cos":0.8722,"full36L_fp16_kv_gib":4.50,"full36L_1bK_2bV_gib":0.47},
+    {"S":65536,"M":1,"fp16_gddr_us":6553.2,"pcie_spill_us":41778.1,"sign_kv_us":424.7,"speedup_vs_gddr_fp16":15.43,"speedup_vs_pcie_spill":98.4,"survived_keys":16,"survived_pct":0.02,"needle_recall_top5pct":1.000,"out_cos":0.5842,"full36L_fp16_kv_gib":9.00,"full36L_1bK_2bV_gib":0.95},
+    {"S":65536,"M":32,"fp16_gddr_us":22977.0,"pcie_spill_us":41778.1,"sign_kv_us":3662.2,"speedup_vs_gddr_fp16":6.27,"speedup_vs_pcie_spill":11.4,"survived_keys":16,"survived_pct":0.02,"needle_recall_top5pct":1.000,"out_cos":0.5842,"full36L_fp16_kv_gib":9.00,"full36L_1bK_2bV_gib":0.95},
+    {"S":65536,"M":64,"fp16_gddr_us":45096.4,"pcie_spill_us":41778.1,"sign_kv_us":7359.6,"speedup_vs_gddr_fp16":6.13,"speedup_vs_pcie_spill":5.7,"survived_keys":16,"survived_pct":0.02,"needle_recall_top5pct":1.000,"out_cos":0.5842,"full36L_fp16_kv_gib":9.00,"full36L_1bK_2bV_gib":0.95}
+  ]
+}

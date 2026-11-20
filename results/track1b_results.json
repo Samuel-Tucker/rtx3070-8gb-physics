@@ -1,0 +1,246 @@
+[
+  {
+    "name": "qwen3_8b_serial",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 5373.4,
+        "tps": 47.46,
+        "wall_tps": 46.74,
+        "draft_n": null,
+        "draft_n_accepted": null,
+        "gpu_snap": "5521, 79.93, 810, 63",
+        "sample": " Also, include a diagram of the Ampere architecture, and explain how the diagram"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 5554.2,
+        "tps": 45.91,
+        "wall_tps": 44.42,
+        "draft_n": null,
+        "draft_n_accepted": null,
+        "gpu_snap": "5525, 79.81, 735, 66",
+        "sample": "import time, torch, json\n\ndef bench_ms(fn, warmup=10, iters=50):\n    for _ in ra"
+      }
+    }
+  },
+  {
+    "name": "qwen3_8b_draft17b_k8",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 6831.5,
+        "tps": 37.33,
+        "wall_tps": 36.91,
+        "draft_n": 604,
+        "draft_n_accepted": 179,
+        "gpu_snap": "7173, 80.07, 945, 70",
+        "exact_match_serial": false,
+        "prefix_match_chars": 57,
+        "total_chars": 1292,
+        "sample": " Also, include a diagram of the Ampere architecture, and a diagram of the memory"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 2741.9,
+        "tps": 93.0,
+        "wall_tps": 85.17,
+        "draft_n": 230,
+        "draft_n_accepted": 226,
+        "gpu_snap": "7179, 79.17, 855, 70",
+        "exact_match_serial": false,
+        "prefix_match_chars": 210,
+        "total_chars": 722,
+        "sample": "import time, torch, json\n\ndef bench_ms(fn, warmup=10, iters=50):\n    for _ in ra"
+      }
+    }
+  },
+  {
+    "name": "qwen3_8b_draft17b_k15",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 9478.1,
+        "tps": 26.9,
+        "wall_tps": 26.72,
+        "draft_n": 1025,
+        "draft_n_accepted": 185,
+        "gpu_snap": "7173, 79.41, 1035, 74",
+        "exact_match_serial": false,
+        "prefix_match_chars": 57,
+        "total_chars": 1292,
+        "sample": " Also, include a diagram of the Ampere architecture, and a diagram of the memory"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 2362.4,
+        "tps": 107.94,
+        "wall_tps": 98.19,
+        "draft_n": 243,
+        "draft_n_accepted": 238,
+        "gpu_snap": "7179, 79.68, 1065, 75",
+        "exact_match_serial": false,
+        "prefix_match_chars": 210,
+        "total_chars": 722,
+        "sample": "import time, torch, json\n\ndef bench_ms(fn, warmup=10, iters=50):\n    for _ in ra"
+      }
+    }
+  },
+  {
+    "name": "qwen3_8b_draft17b_k23",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 7464.5,
+        "tps": 34.16,
+        "wall_tps": 33.82,
+        "draft_n": 878,
+        "draft_n_accepted": 216,
+        "gpu_snap": "7173, 79.38, 960, 78",
+        "exact_match_serial": true,
+        "prefix_match_chars": 1292,
+        "total_chars": 1292,
+        "sample": " Also, include a diagram of the Ampere architecture, and explain how the diagram"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 2179.6,
+        "tps": 117.0,
+        "wall_tps": 105.52,
+        "draft_n": 244,
+        "draft_n_accepted": 244,
+        "gpu_snap": "7179, 80.02, 1080, 78",
+        "exact_match_serial": false,
+        "prefix_match_chars": 210,
+        "total_chars": 722,
+        "sample": "import time, torch, json\n\ndef bench_ms(fn, warmup=10, iters=50):\n    for _ in ra"
+      }
+    }
+  },
+  {
+    "name": "qwen3_8b_ngram_mod_k15",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 3111.1,
+        "tps": 81.96,
+        "wall_tps": 79.28,
+        "draft_n": 130,
+        "draft_n_accepted": 130,
+        "gpu_snap": "5521, 77.97, 1140, 79",
+        "exact_match_serial": true,
+        "prefix_match_chars": 1292,
+        "total_chars": 1292,
+        "sample": " Also, include a diagram of the Ampere architecture, and explain how the diagram"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 1632.0,
+        "tps": 156.25,
+        "wall_tps": 137.99,
+        "draft_n": 203,
+        "draft_n_accepted": 194,
+        "gpu_snap": "5525, 78.28, 1125, 79",
+        "exact_match_serial": true,
+        "prefix_match_chars": 722,
+        "total_chars": 722,
+        "sample": "import time, torch, json\n\ndef bench_ms(fn, warmup=10, iters=50):\n    for _ in ra"
+      }
+    }
+  },
+  {
+    "name": "qwen3_4b_serial",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 3383.3,
+        "tps": 75.37,
+        "wall_tps": 74.68,
+        "draft_n": null,
+        "draft_n_accepted": null,
+        "gpu_snap": "3209, 79.88, 945, 80",
+        "sample": " I want to see the actual code and data structures that would be used in this sc"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 3457.9,
+        "tps": 73.74,
+        "wall_tps": 71.24,
+        "draft_n": null,
+        "draft_n_accepted": null,
+        "gpu_snap": "3211, 79.78, 915, 81",
+        "sample": "# Your refactored script here\n```\n\nWe are going to add two new functions for FP8"
+      }
+    }
+  },
+  {
+    "name": "qwen3_4b_draft17b_k15",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 10812.7,
+        "tps": 23.58,
+        "wall_tps": 23.44,
+        "draft_n": 1248,
+        "draft_n_accepted": 171,
+        "gpu_snap": "4865, 79.45, 1080, 83",
+        "exact_match_serial": false,
+        "prefix_match_chars": 781,
+        "total_chars": 1072,
+        "sample": " I want to see the actual code and data structures that would be used in this sc"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 11901.8,
+        "tps": 21.43,
+        "wall_tps": 21.22,
+        "draft_n": 1332,
+        "draft_n_accepted": 163,
+        "gpu_snap": "4869, 79.86, 1020, 85",
+        "exact_match_serial": false,
+        "prefix_match_chars": 154,
+        "total_chars": 1086,
+        "sample": "# Your refactored script here\n```\n\nWe are going to add two new functions for FP8"
+      }
+    }
+  },
+  {
+    "name": "qwen3_4b_ngram_mod_k15",
+    "runs": {
+      "prose": {
+        "predicted_n": 256,
+        "predicted_ms": 3530.1,
+        "tps": 72.24,
+        "wall_tps": 71.62,
+        "draft_n": null,
+        "draft_n_accepted": null,
+        "gpu_snap": "3209, 79.83, 795, 84",
+        "exact_match_serial": true,
+        "prefix_match_chars": 1072,
+        "total_chars": 1072,
+        "sample": " I want to see the actual code and data structures that would be used in this sc"
+      },
+      "code_edit": {
+        "predicted_n": 256,
+        "predicted_ms": 3597.9,
+        "tps": 70.87,
+        "wall_tps": 68.46,
+        "draft_n": null,
+        "draft_n_accepted": null,
+        "gpu_snap": "3211, 79.82, 810, 84",
+        "exact_match_serial": true,
+        "prefix_match_chars": 1086,
+        "total_chars": 1086,
+        "sample": "# Your refactored script here\n```\n\nWe are going to add two new functions for FP8"
+      }
+    }
+  },
+  {
+    "name": "qwen35_4bq8_serial",
+    "error": "health timeout:  llama_model_load_from_file_impl: failed to load model\n0.00.693.259 E cmn  common_init_: failed to load model '<local-gguf>/Qwen3-8B-Q4_K_M.gguf'\n0.00.693.262 E srv    load_model: failed to load model, '<local-gguf>/Qwen3-8B-Q4_K_M.gguf'\n0.00.693.265 I srv    operator(): operator(): cleaning up before exit...\n0.00.693.674 E srv  llama_server: exiting due to model loading error\n"
+  },
+  {
+    "name": "qwen35_4bq8_draft2b_k15",
+    "error": "health timeout:  llama_model_load_from_file_impl: failed to load model\n0.02.368.318 E cmn  common_init_: failed to load model '<local-gguf>/Qwen3-8B-Q4_K_M.gguf'\n0.02.368.321 E srv    load_model: failed to load model, '<local-gguf>/Qwen3-8B-Q4_K_M.gguf'\n0.02.368.322 I srv    operator(): operator(): cleaning up before exit...\n0.02.368.723 E srv  llama_server: exiting due to model loading error\n"
+  }
+]

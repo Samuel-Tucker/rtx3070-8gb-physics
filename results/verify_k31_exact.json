@@ -1,0 +1,21 @@
+{
+  "script": "verify_k31_exact.py",
+  "host": "rtx3070-laptop",
+  "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU (8192 MiB, 80W cap)",
+  "model": "qwen3:8b Q4_K_M (<local-gguf>/Qwen3-8B-Q4_K_M.gguf)",
+  "prompt_type": "code_edit (Python CUDA benchmark refactor)",
+  "temperature": 0.0,
+  "top_k": 1,
+  "seed": 42,
+  "n_predict": 256,
+  "serial_tps": 48.84,
+  "ngram_simple_k31_tps": 414.37,
+  "speedup": 8.48,
+  "draft_n": 248,
+  "acc": 235,
+  "acceptance_pct": 94.76,
+  "exact_match": true,
+  "prefix_match_chars": 722,
+  "total_chars": 722,
+  "date_utc": "2026-11-20T17:35:50Z"
+}

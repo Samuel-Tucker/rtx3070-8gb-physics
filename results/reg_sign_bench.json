@@ -1,0 +1,10 @@
+{
+  "results":[
+    {"method":"cublas_fp16","n":4096,"k":4096,"bytes":33554432,"bpw":16,"cold_us":103.42,"cold_gbps":324.4,"cold_speedup":1.00,"warm_us":96.61,"warm_gbps":347.3,"warm_speedup":1.00,"cos":1.0000000},
+    {"method":"reg_sign1_1.125bpw","n":4096,"k":4096,"bytes":2359296,"bpw":1.1250000,"cold_us":47.10,"cold_gbps":50.1,"cold_speedup":2.20,"warm_us":46.08,"warm_gbps":51.2,"warm_speedup":2.09,"cos":1.0000000},
+    {"method":"reg_dual_sign_2.5bpw","n":4096,"k":4096,"bytes":5242880,"bpw":2.5000000,"cold_us":36.96,"cold_gbps":141.9,"cold_speedup":2.80,"warm_us":37.89,"warm_gbps":138.4,"warm_speedup":2.54,"cos":1.0000000},
+    {"method":"cublas_fp16","n":3072,"k":1024,"bytes":6291456,"bpw":16.0000000,"cold_us":24.58,"cold_gbps":256.0,"cold_speedup":1.00,"warm_us":21.34,"warm_gbps":294.8,"warm_speedup":0.98,"cos":1.0000000},
+    {"method":"reg_sign1_1.125bpw","n":3072,"k":1024,"bytes":442368,"bpw":1.1250000,"cold_us":11.26,"cold_gbps":39.3,"cold_speedup":2.18,"warm_us":10.24,"warm_gbps":43.2,"warm_speedup":2.04,"cos":1.0000000},
+    {"method":"reg_dual_sign_2.5bpw","n":3072,"k":1024,"bytes":983040,"bpw":2.5000000,"cold_us":12.29,"cold_gbps":80.0,"cold_speedup":2.00,"warm_us":10.94,"warm_gbps":89.8,"warm_speedup":1.91,"cos":1.0000000}
+  ]
+}
