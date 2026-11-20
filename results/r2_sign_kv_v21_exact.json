@@ -1,0 +1,11 @@
+{
+  "track": "R2-2_v21_Masullo_Shell_PinnedHost_SpikeRefine",
+  "runs": [
+    {"S": 65536, "M": 1, "fp16_gpu_us": 6840.9294, "v21_pinned_host_refine_us": 591.7632, "speedup_vs_gpu": 11.5602, "surv_q0h0": 178, "exact_pcie_spikes_q0h0": 16, "head0_needle_cos": 0.9999, "head0_rel_l2": 0.0120, "mean_cos_all_heads": 1.0000, "min_cos_all_heads": 0.9999, "mean_rel_l2": 0.0100, "gpu_vram_36L_gib": 1.3711},
+    {"S": 65536, "M": 16, "fp16_gpu_us": 14461.3892, "v21_pinned_host_refine_us": 2826.3424, "speedup_vs_gpu": 5.1166, "surv_q0h0": 178, "exact_pcie_spikes_q0h0": 16, "head0_needle_cos": 0.9999, "head0_rel_l2": 0.0120, "mean_cos_all_heads": 1.0000, "min_cos_all_heads": 0.9999, "mean_rel_l2": 0.0095, "gpu_vram_36L_gib": 1.3711},
+    {"S": 65536, "M": 32, "fp16_gpu_us": 23294.1574, "v21_pinned_host_refine_us": 5065.4209, "speedup_vs_gpu": 4.5987, "surv_q0h0": 178, "exact_pcie_spikes_q0h0": 16, "head0_needle_cos": 0.9999, "head0_rel_l2": 0.0120, "mean_cos_all_heads": 1.0000, "min_cos_all_heads": 0.9999, "mean_rel_l2": 0.0096, "gpu_vram_36L_gib": 1.3711},
+    {"S": 131072, "M": 1, "fp16_gpu_us": 13125.7858, "v21_pinned_host_refine_us": 947.7120, "speedup_vs_gpu": 13.8500, "surv_q0h0": 177, "exact_pcie_spikes_q0h0": 17, "head0_needle_cos": 1.0000, "head0_rel_l2": 0.0094, "mean_cos_all_heads": 1.0000, "min_cos_all_heads": 1.0000, "mean_rel_l2": 0.0069, "gpu_vram_36L_gib": 2.7422},
+    {"S": 131072, "M": 16, "fp16_gpu_us": 28992.0898, "v21_pinned_host_refine_us": 3926.9295, "speedup_vs_gpu": 7.3829, "surv_q0h0": 177, "exact_pcie_spikes_q0h0": 17, "head0_needle_cos": 1.0000, "head0_rel_l2": 0.0094, "mean_cos_all_heads": 1.0000, "min_cos_all_heads": 0.9999, "mean_rel_l2": 0.0069, "gpu_vram_36L_gib": 2.7422},
+    {"S": 131072, "M": 32, "fp16_gpu_us": 47203.5339, "v21_pinned_host_refine_us": 7160.2692, "speedup_vs_gpu": 6.5924, "surv_q0h0": 177, "exact_pcie_spikes_q0h0": 17, "head0_needle_cos": 1.0000, "head0_rel_l2": 0.0094, "mean_cos_all_heads": 1.0000, "min_cos_all_heads": 1.0000, "mean_rel_l2": 0.0069, "gpu_vram_36L_gib": 2.7422}
+  ]
+}

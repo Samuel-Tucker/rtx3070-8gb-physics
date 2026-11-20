@@ -1,0 +1,19 @@
+{
+  "tokens": 442,
+  "dense_fp16": {
+    "nll": 2.5694,
+    "ppl": 13.057
+  },
+  "v21_exactTop16_fwht2bitV_centroid": {
+    "28L_mean_cos": 0.98401,
+    "nll": 2.5702,
+    "ppl": 13.068,
+    "ppl_delta_pct": 0.08
+  },
+  "v21_exactTop16_4bitV_centroid": {
+    "28L_mean_cos": 0.9862,
+    "nll": 2.5691,
+    "ppl": 13.054,
+    "ppl_delta_pct": -0.03
+  }
+}

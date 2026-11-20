@@ -1,0 +1,365 @@
+{
+  "8b_serial": {
+    "vram_mib": 5503,
+    "prose": {
+      "tps": 46.24,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 1050,
+      "speedup_vs_serial": 1.0
+    },
+    "reason": {
+      "tps": 45.26,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 1333,
+      "speedup_vs_serial": 1.0
+    },
+    "code": {
+      "tps": 44.18,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 722,
+      "speedup_vs_serial": 1.0
+    }
+  },
+  "8b_ngram_mod_k15": {
+    "vram_mib": 5503,
+    "prose": {
+      "tps": 56.6,
+      "n_pred": 256,
+      "draft_n": 98,
+      "draft_acc": 61,
+      "acc_rate": 0.622,
+      "exact_match": true,
+      "total_chars": 1050,
+      "speedup_vs_serial": 1.22
+    },
+    "reason": {
+      "tps": 43.44,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.96
+    },
+    "code": {
+      "tps": 161.18,
+      "n_pred": 256,
+      "draft_n": 203,
+      "draft_acc": 194,
+      "acc_rate": 0.956,
+      "exact_match": true,
+      "total_chars": 722,
+      "speedup_vs_serial": 3.65
+    }
+  },
+  "8b_draft06b_gpu_k8": {
+    "vram_mib": 6399,
+    "prose": {
+      "tps": 63.94,
+      "n_pred": 256,
+      "draft_n": 477,
+      "draft_acc": 195,
+      "acc_rate": 0.409,
+      "exact_match": true,
+      "total_chars": 1050,
+      "speedup_vs_serial": 1.38
+    },
+    "reason": {
+      "tps": 34.26,
+      "n_pred": 256,
+      "draft_n": 884,
+      "draft_acc": 144,
+      "acc_rate": 0.163,
+      "exact_match": false,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.76
+    },
+    "code": {
+      "tps": 126.06,
+      "n_pred": 256,
+      "draft_n": 230,
+      "draft_acc": 226,
+      "acc_rate": 0.983,
+      "exact_match": false,
+      "total_chars": 722,
+      "speedup_vs_serial": 2.85
+    }
+  },
+  "8b_draft06b_gpu_k15": {
+    "vram_mib": 6399,
+    "prose": {
+      "tps": 53.25,
+      "n_pred": 256,
+      "draft_n": 759,
+      "draft_acc": 204,
+      "acc_rate": 0.269,
+      "exact_match": true,
+      "total_chars": 1050,
+      "speedup_vs_serial": 1.15
+    },
+    "reason": {
+      "tps": 24.68,
+      "n_pred": 256,
+      "draft_n": 1615,
+      "draft_acc": 146,
+      "acc_rate": 0.09,
+      "exact_match": false,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.55
+    },
+    "code": {
+      "tps": 146.98,
+      "n_pred": 256,
+      "draft_n": 258,
+      "draft_acc": 237,
+      "acc_rate": 0.919,
+      "exact_match": false,
+      "total_chars": 722,
+      "speedup_vs_serial": 3.33
+    }
+  },
+  "8b_draft06b_gpu_k15_p50": {
+    "vram_mib": 6399,
+    "prose": {
+      "tps": 78.46,
+      "n_pred": 256,
+      "draft_n": 205,
+      "draft_acc": 184,
+      "acc_rate": 0.898,
+      "exact_match": false,
+      "total_chars": 1050,
+      "speedup_vs_serial": 1.7
+    },
+    "reason": {
+      "tps": 44.9,
+      "n_pred": 256,
+      "draft_n": 226,
+      "draft_acc": 117,
+      "acc_rate": 0.518,
+      "exact_match": false,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.99
+    },
+    "code": {
+      "tps": 148.44,
+      "n_pred": 256,
+      "draft_n": 251,
+      "draft_acc": 237,
+      "acc_rate": 0.944,
+      "exact_match": false,
+      "total_chars": 722,
+      "speedup_vs_serial": 3.36
+    }
+  },
+  "8b_draft06b_gpu_k23_p50": {
+    "vram_mib": 6429,
+    "prose": {
+      "tps": 80.15,
+      "n_pred": 256,
+      "draft_n": 208,
+      "draft_acc": 187,
+      "acc_rate": 0.899,
+      "exact_match": false,
+      "total_chars": 1050,
+      "speedup_vs_serial": 1.73
+    },
+    "reason": {
+      "tps": 42.83,
+      "n_pred": 256,
+      "draft_n": 230,
+      "draft_acc": 108,
+      "acc_rate": 0.47,
+      "exact_match": false,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.95
+    },
+    "code": {
+      "tps": 173.2,
+      "n_pred": 256,
+      "draft_n": 243,
+      "draft_acc": 243,
+      "acc_rate": 1.0,
+      "exact_match": false,
+      "total_chars": 722,
+      "speedup_vs_serial": 3.92
+    }
+  },
+  "8b_STACKED_ngram_plus_06b": {
+    "vram_mib": 6399,
+    "prose": {
+      "tps": 93.83,
+      "n_pred": 256,
+      "draft_n": 210,
+      "draft_acc": 188,
+      "acc_rate": 0.895,
+      "exact_match": false,
+      "total_chars": 1050,
+      "speedup_vs_serial": 2.03
+    },
+    "reason": {
+      "tps": 44.85,
+      "n_pred": 256,
+      "draft_n": 226,
+      "draft_acc": 117,
+      "acc_rate": 0.518,
+      "exact_match": false,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.99
+    },
+    "code": {
+      "tps": 273.62,
+      "n_pred": 256,
+      "draft_n": 251,
+      "draft_acc": 237,
+      "acc_rate": 0.944,
+      "exact_match": false,
+      "total_chars": 722,
+      "speedup_vs_serial": 6.19
+    }
+  },
+  "8b_draft06b_cpu_ghost_k8": {
+    "vram_mib": 5503,
+    "prose": {
+      "tps": 25.57,
+      "n_pred": 256,
+      "draft_n": 195,
+      "draft_acc": 175,
+      "acc_rate": 0.897,
+      "exact_match": false,
+      "total_chars": 1050,
+      "speedup_vs_serial": 0.55
+    },
+    "reason": {
+      "tps": 17.47,
+      "n_pred": 256,
+      "draft_n": 211,
+      "draft_acc": 110,
+      "acc_rate": 0.521,
+      "exact_match": false,
+      "total_chars": 1333,
+      "speedup_vs_serial": 0.39
+    },
+    "code": {
+      "tps": 28.25,
+      "n_pred": 256,
+      "draft_n": 233,
+      "draft_acc": 223,
+      "acc_rate": 0.957,
+      "exact_match": true,
+      "total_chars": 722,
+      "speedup_vs_serial": 0.64
+    }
+  },
+  "4b_serial": {
+    "vram_mib": 3207,
+    "prose": {
+      "tps": 76.92,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 1044,
+      "speedup_vs_serial": 1.0
+    },
+    "reason": {
+      "tps": 76.93,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 1152,
+      "speedup_vs_serial": 1.0
+    },
+    "code": {
+      "tps": 75.74,
+      "n_pred": 256,
+      "draft_n": 0,
+      "draft_acc": 0,
+      "acc_rate": null,
+      "exact_match": true,
+      "total_chars": 1086,
+      "speedup_vs_serial": 1.0
+    }
+  },
+  "4b_draft06b_gpu_k15_p50": {
+    "vram_mib": 4103,
+    "prose": {
+      "tps": 58.46,
+      "n_pred": 256,
+      "draft_n": 330,
+      "draft_acc": 127,
+      "acc_rate": 0.385,
+      "exact_match": false,
+      "total_chars": 1044,
+      "speedup_vs_serial": 0.76
+    },
+    "reason": {
+      "tps": 74.87,
+      "n_pred": 256,
+      "draft_n": 330,
+      "draft_acc": 171,
+      "acc_rate": 0.518,
+      "exact_match": true,
+      "total_chars": 1152,
+      "speedup_vs_serial": 0.97
+    },
+    "code": {
+      "tps": 62.24,
+      "n_pred": 256,
+      "draft_n": 236,
+      "draft_acc": 126,
+      "acc_rate": 0.534,
+      "exact_match": false,
+      "total_chars": 1086,
+      "speedup_vs_serial": 0.82
+    }
+  },
+  "4b_STACKED_ngram_plus_06b": {
+    "vram_mib": 4103,
+    "prose": {
+      "tps": 58.0,
+      "n_pred": 256,
+      "draft_n": 330,
+      "draft_acc": 127,
+      "acc_rate": 0.385,
+      "exact_match": false,
+      "total_chars": 1044,
+      "speedup_vs_serial": 0.75
+    },
+    "reason": {
+      "tps": 74.45,
+      "n_pred": 256,
+      "draft_n": 330,
+      "draft_acc": 171,
+      "acc_rate": 0.518,
+      "exact_match": true,
+      "total_chars": 1152,
+      "speedup_vs_serial": 0.97
+    },
+    "code": {
+      "tps": 61.75,
+      "n_pred": 256,
+      "draft_n": 236,
+      "draft_acc": 126,
+      "acc_rate": 0.534,
+      "exact_match": false,
+      "total_chars": 1086,
+      "speedup_vs_serial": 0.82
+    }
+  }
+}

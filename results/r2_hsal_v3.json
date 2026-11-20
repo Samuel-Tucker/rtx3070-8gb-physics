@@ -1,0 +1,10 @@
+{
+  "track": "R2-4B_HSAL_v3_Tiled_Outlier_CUDA",
+  "shape": "4096x4096",
+  "batches": [
+    {"M": 1, "cublas_fp16_cold_us": 100.35, "packed_int4_cold_us": 34.82, "hsal_1lift_1.125bpw_cold_us": 40.96, "hsal_1lift_3pctOut_1.59bpw_cold_us": 41.98, "hsal_2lift_3pctOut_2.68bpw_cold_us": 76.80, "speedup_hsal1_vs_fp16": 2.45, "speedup_hsal1out_vs_int4": 0.83, "speedup_hsal2out_vs_int4": 0.45, "speedup_hsal2out_vs_fp16": 1.31},
+    {"M": 4, "cublas_fp16_cold_us": 107.52, "packed_int4_cold_us": 106.50, "hsal_1lift_1.125bpw_cold_us": 168.96, "hsal_1lift_3pctOut_1.59bpw_cold_us": 169.98, "hsal_2lift_3pctOut_2.68bpw_cold_us": 381.95, "speedup_hsal1_vs_fp16": 0.64, "speedup_hsal1out_vs_int4": 0.63, "speedup_hsal2out_vs_int4": 0.28, "speedup_hsal2out_vs_fp16": 0.28},
+    {"M": 16, "cublas_fp16_cold_us": 111.62, "packed_int4_cold_us": 394.24, "hsal_1lift_1.125bpw_cold_us": 746.50, "hsal_1lift_3pctOut_1.59bpw_cold_us": 654.34, "hsal_2lift_3pctOut_2.68bpw_cold_us": 1551.36, "speedup_hsal1_vs_fp16": 0.15, "speedup_hsal1out_vs_int4": 0.60, "speedup_hsal2out_vs_int4": 0.25, "speedup_hsal2out_vs_fp16": 0.07},
+    {"M": 32, "cublas_fp16_cold_us": 107.52, "packed_int4_cold_us": 795.65, "hsal_1lift_1.125bpw_cold_us": 1280.00, "hsal_1lift_3pctOut_1.59bpw_cold_us": 1306.62, "hsal_2lift_3pctOut_2.68bpw_cold_us": 3159.04, "speedup_hsal1_vs_fp16": 0.08, "speedup_hsal1out_vs_int4": 0.61, "speedup_hsal2out_vs_int4": 0.25, "speedup_hsal2out_vs_fp16": 0.03}
+  ]
+}
