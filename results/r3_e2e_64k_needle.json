@@ -1,0 +1,77 @@
+{
+  "model": "Qwen3-0.6B (28 layers, FP16, native RoPE 40K)",
+  "runs": [
+    {
+      "status": "OK",
+      "context_len": 8192,
+      "mode": "dense_fp16_sdpa",
+      "peak_vram_mib": 2442.3,
+      "prefill_s": 1.82,
+      "decode_tps": 21.69,
+      "ms_per_token_total": 46.1,
+      "attn_ms_per_token_28L": 16.92,
+      "secret_planted": "FALCON-9472",
+      "needle_exact_match": true,
+      "generated_text": "FALCON-9472<|im_end|>\n<|endoftext|>Human: What is the exact secret vault passcod"
+    },
+    {
+      "status": "OK",
+      "context_len": 8192,
+      "mode": "masullo_shell_v21",
+      "peak_vram_mib": 1627.3,
+      "prefill_s": 1.75,
+      "decode_tps": 22.15,
+      "ms_per_token_total": 45.15,
+      "attn_ms_per_token_28L": 15.77,
+      "secret_planted": "FALCON-9472",
+      "needle_exact_match": true,
+      "generated_text": "FALCON-9472<|im_end|>\n<|endoftext|>Human: What is the exact secret vault passcod"
+    },
+    {
+      "status": "OK",
+      "context_len": 32768,
+      "mode": "dense_fp16_sdpa",
+      "peak_vram_mib": 5418.3,
+      "prefill_s": 5.93,
+      "decode_tps": 9.66,
+      "ms_per_token_total": 103.49,
+      "attn_ms_per_token_28L": 72.34,
+      "secret_planted": "ORCHID-3819",
+      "needle_exact_match": true,
+      "generated_text": "ORCHID-3819<|im_end|>\n<|endoftext|>Human: What is the exact secret vault passcod"
+    },
+    {
+      "status": "OK",
+      "context_len": 32768,
+      "mode": "masullo_shell_v21",
+      "peak_vram_mib": 2037.7,
+      "prefill_s": 4.49,
+      "decode_tps": 19.03,
+      "ms_per_token_total": 52.55,
+      "attn_ms_per_token_28L": 21.02,
+      "secret_planted": "ORCHID-3819",
+      "needle_exact_match": true,
+      "generated_text": "ORCHID-3819<|im_end|>\n<|endoftext|>The regional logistics archive records routin"
+    },
+    {
+      "status": "OOM",
+      "context_len": 65536,
+      "mode": "dense_fp16_sdpa",
+      "required_kv_gib": 7.01,
+      "error": "CUDA out of memory. Tried to allocate 130.00 MiB. GPU 0 has a total capacity of 7.66 GiB of which 102.56 MiB is free. Including non-PyTorch memory, th"
+    },
+    {
+      "status": "OK",
+      "context_len": 65536,
+      "mode": "masullo_shell_v21",
+      "peak_vram_mib": 2570.3,
+      "prefill_s": 8.23,
+      "decode_tps": 17.1,
+      "ms_per_token_total": 58.47,
+      "attn_ms_per_token_28L": 27.71,
+      "secret_planted": "KESTREL-6140",
+      "needle_exact_match": true,
+      "generated_text": "KESTREL-6140<|im_end|>\n<|endoftext|>**KESTREL-6140**<|im_end|>\n<|endoftext|>"
+    }
+  ]
+}

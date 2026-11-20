@@ -68,6 +68,25 @@ Measured with [`benchmarks/hw_physics.py`](benchmarks/hw_physics.py) and [`bench
 
 ---
 
+## Round 3 Live End-to-End Proof (Win #8 — Real 28-Layer 64K Needle-in-a-Haystack on 8 GB VRAM!)
+
+We compiled Masullo-Shell Sign-KV v2.1 into a live CUDA shared library ([`kernels/masullo_kv_lib.cu`](kernels/masullo_kv_lib.cu)) and wired it directly into **all 28 real layers of frozen `Qwen3-0.6B`** (`16` Q heads, `8` KV heads, `head_dim=128`) on the clean 8 GB RTX 3070 Laptop — testing real secret passcode retrieval at 50% depth across **8K, 32K, and 64K context** ([`benchmarks/r3_e2e_64k_needle.py`](benchmarks/r3_e2e_64k_needle.py), [`results/r3_e2e_64k_needle.json`](results/r3_e2e_64k_needle.json)):
+
+| Context (`S`) | Mode | Peak GPU VRAM | 28-Layer Attn / tok | End-to-End Decode | Secret Passcode Retrieved? |
+| :--- | :--- | ---: | ---: | ---: | :--- |
+| **8,192 (8K)** | Dense FP16 SDPA | `2,442 MiB` | `16.92 ms` | `21.69 tok/s` | **YES** (`FALCON-9472`) |
+| **8,192 (8K)** | **Masullo-Shell v2.1** | **`1,627 MiB`** | **`15.77 ms`** | **`22.15 tok/s`** | **YES** (`FALCON-9472`) |
+| **32,768 (32K)** | Dense FP16 SDPA | `5,418 MiB` | `72.34 ms` | `9.66 tok/s` | **YES** (`ORCHID-3819`) |
+| **32,768 (32K)** | **Masullo-Shell v2.1** | **`2,038 MiB` (`2.66×` less!)** | **`21.02 ms` (`3.44×` faster!)** | **`19.03 tok/s` (`1.97×` faster!)** | **YES** (`ORCHID-3819`) |
+| **65,536 (64K)** | Dense FP16 SDPA | **CUDA OOM** (`7.01 GiB` KV alone) | — | — | **OOM** |
+| **65,536 (64K)** | **Masullo-Shell v2.1** | **`2,570 MiB` (`2.51 GiB` total!)** | **`27.71 ms`** | **`17.10 tok/s` (`1.77×` faster than Dense @ 32K!)** | **YES** (`KESTREL-6140`) |
+
+### Two Real-LLM CUDA Physics Lessons Discovered During Build A:
+1. **Exclude BOS/Sink Norms from `gmax` + Use a 64-Bin SMEM Adaptive Histogram:** On real `Qwen3` models, token 0 (`<|im_start|>`) has a `5–10×` larger key norm than content tokens, drowning out fixed-margin thresholds. Computing a 64-bin histogram strictly over content tokens guarantees global top-K needle selection with zero buffer overflow.
+2. **The Softmax + Low-Bit Key Law:** Never feed noisy 2-bit `Q·K` dot products into `exp()` on real RoPE LLMs where logits reach `25–40` (a 15% error causes `exp(±5) ≈ 150×` softmax explosion in early layers `L01–L05`). Use 1-bit `__popc` **strictly for screening**, then score all shortlisted ~256 survivors with **exact FP16 `Q·K` over zero-copy pinned host RAM**!
+
+---
+
 ## Round 2 Moonshot Breakthroughs (Wins #5–#7)
 
 | # | Breakthrough | Measured Result (Clean RTX 3070) | Honest Caveat & Scope | Source |
@@ -92,7 +111,7 @@ Measured with [`benchmarks/hw_physics.py`](benchmarks/hw_physics.py) and [`bench
 
 ---
 
-## Eight Honest Kills (Published So Nobody Retraces Dead Ends)
+## Nine Honest Kills (Published So Nobody Retraces Dead Ends)
 
 1. **Post-hoc 1.125–2.5 bpw rounding on frozen `Qwen3-0.6B` (R1 + R2):** Naive 1.125–2.25 bpw collapsed NLL to `11.64–16.11`. Adding two-sided Hadamard (`H_N W H_K`) + 3–5% Bost-slope FP16 outlier columns slashed 2-bit NLL from `14.32 → 6.58` (`-7.74` NLL!), and `3-bit + 3% outliers` (`3.63 bpw`) reached `NLL = 5.28` (`top2 = 76.2%`), **but** sub-3-bit post-hoc still misses a `<+10% PPL` bar without QAT/GPTQ ([`results/track2_quality.json`](results/track2_quality.json), [`results/r2_moonshots_v2.json`](results/r2_moonshots_v2.json)).
 2. **Post-hoc 2D-FFT / Monarch-FWHT / Sign+SVD on frozen weights (R1):** All scored `0.37–0.91` cosine (`<0.95` bar) and ran slower than dense in PyTorch ([`results/track4_spectral.json`](results/track4_spectral.json)).
@@ -102,6 +121,7 @@ Measured with [`benchmarks/hw_physics.py`](benchmarks/hw_physics.py) and [`bench
 6. **Zero-training `gate+up` FFN pre-screening (R2):** Both 1-bit sign (`+1,189%` PPL) and activation-weighted Rank-64/128/256 SVD (`+25%` to `+260%` PPL at 40–50% skip) failed quality on frozen `Qwen3-0.6B` because `SiLU(g)*u` is sharp and full-rank — only `W_down` skipping works zero-training ([`results/r2_frozen_moonshots.json`](results/r2_frozen_moonshots.json), [`results/r2_moonshots_v2.json`](results/r2_moonshots_v2.json)).
 7. **Synchronous CPU-Ghost `0.6B` draft in `llama.cpp` (R2):** Running `Qwen3-0.6B` on the 8-core i9 (`--spec-draft-device none`, `+0 MiB` VRAM) slowed `Qwen3-8B` prose to `25.57 tok/s` (`0.55×`) because `llama.cpp` stalls GPU verification during serial CPU drafting ([`results/r2_llama_prose_v2.json`](results/r2_llama_prose_v2.json)).
 8. **`Qwen3-0.6B` drafting for `Qwen3-4B` (R2):** Slowed `Qwen3-4B` prose (`76.92 → 58.46 tok/s`, `0.76×`) because the `4B` target is already fast enough that a `0.6B` drafter lacks sufficient speed ratio ([`results/r2_llama_prose_v2.json`](results/r2_llama_prose_v2.json)).
+9. **Small Trained 2-Layer ReLU MLP Router (`R=128, 256`) for SwiGLU `gate+up` Pre-Screening (R3):** Trained across all 28 layers of `Qwen3-0.6B` on disjoint prose (`1,536` tokens), still degraded sealed PPL by `+54.7%–72.5%` at 40% skip and `+125%–128%` at 50% skip (whereas `oracle_down_only` was `-0.03%` at 40% and `+0.52%` at 50%!). Unlike ReLU models (DejaVu), frozen SwiGLU lacks hard zeros and requires ReLU-ification or QAT to pre-skip `gate+up` ([`benchmarks/r3_dejavu_ffn_router.py`](benchmarks/r3_dejavu_ffn_router.py), [`results/r3_dejavu_ffn_router.json`](results/r3_dejavu_ffn_router.json)).
 
 ---
 
@@ -110,6 +130,10 @@ Measured with [`benchmarks/hw_physics.py`](benchmarks/hw_physics.py) and [`bench
 Tested on Linux with CUDA 12.x / 13.x on Ampere `sm_86` (change `-arch=sm_86` for your GPU):
 
 ```bash
+# Round 3 Live End-to-End 64K Masullo-Shell Library + Real 28-Layer Qwen3-0.6B Needle Test
+nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math -Xcompiler -fPIC -shared kernels/masullo_kv_lib.cu -o libmasullo_kv.so
+MASULLO_LIB=./libmasullo_kv.so QWEN3_06B_DIR=/path/to/Qwen3-0.6B python3 benchmarks/r3_e2e_64k_needle.py
+
 # Round 2 Moonshot Kernels
 nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math kernels/sign_kv_v2_exact.cu -o sign_kv_v2_exact && ./sign_kv_v2_exact
 nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math kernels/sign_kv_v2.cu -o sign_kv_v2 && ./sign_kv_v2
