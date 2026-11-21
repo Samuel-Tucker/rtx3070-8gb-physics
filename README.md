@@ -7,7 +7,45 @@ First-principles CUDA kernels, `llama.cpp` batching & speculative decoding bench
 * **Full essay (Round 1):** [What a Riemann Note Taught My 8 GB Laptop GPU](https://sams.help/essays/riemann-note-8gb-laptop-gpu/)
 * **X thread / article:** [@scanningwithsam](https://x.com/scanningwithsam/status/2123899077435752795)
 
-> **Note on mathematical inspiration:** Several kernel designs below were inspired by structural moves in two **unverified** November 20, 2026 GRH proof preprints — Levent Alpöge & Claude's `alpo.ge/remark.pdf` (Rallis seesaw, Parseval FWHT, Iwasawa nested bit-planes, Bost maximal-slope inequality) and Alessandro Maria Masullo's *The Music of the Primes* (global-plus-local Shell Structure and bare-minimum normed topologies). Both mathematical claims remain **unverified** and are used here strictly as algorithmic inspiration. Every GPU claim in this repo is independently measured on hardware and backed by raw JSON in [`results/`](results/).
+> **Note on mathematical inspiration:** Several kernel designs below were inspired by structural moves in three **unverified** 2026 preprints — Levent Alpöge & Claude's `alpo.ge/remark.pdf` (plus Sahibzada Allahyar's 51-page reconstruction: Rallis seesaw, Parseval FWHT, Iwasawa nested bit-planes, Bost maximal-slope inequality, thick/thin places, and one-sided hinge ramps), Alessandro Maria Masullo's *The Music of the Primes* (global-plus-local Shell Structure, Unit-Sphere Bulk Degeneration, Local-Within-Global page residuals, and Saturated Sets of Places), and Yianni & Allahyar's unrestricted 2-input Boolean circuit lower bound for 3-SAT. All mathematical claims remain **unverified** and are used here strictly as algorithmic inspiration. Every GPU claim in this repo is independently measured on hardware and backed by raw JSON in [`results/`](results/).
+
+---
+
+## Round 4 & Round 5 Moonshot Breakthroughs (Wins #9–#11 + Hardware Proof + Honest Kill #10)
+
+### Win #9 — Real 36-Layer `Qwen3-4B` Live at **128K Context** Inside **`3.38 GiB` VRAM** (Masullo-Shell Sign-KV v3.1 — `19.69×` GPU KV Compression!)
+Stripping `K_p1` and `V_p0/V_p1` leaves ONLY **`26 B/token/head/layer`** on GPU (`16 B` 1-bit FWHT residual + `2 B` residual norm + `8 B` amortized FP16 64-token page centroids = **`19.69×` smaller than `512 B` FP16!**) plus `Q8_0` zero-copy pinned host RAM (`cudaHostAllocMapped`) for exact `top-256` spike rescoring.
+
+**The v3.1 Zero-VRAM Algorithmic Breakthrough (Masullo Local-Within-Global Residual):** Instead of taking 1-bit signs of raw `K_t`, we store `K_p0` as the 1-bit FWHT sign of the **page-centered residual `K_t - μ_{K,p}`**, computing `Q·μ_{K,p}` in **exact FP16** first and adding the 1-bit residual score — **0 extra bytes of VRAM**, slashing 128K needle ranking error by **`10×–22×`** (on `Qwen3-0.6B` 128K diagnostic: `L22 h=13` jumped from rank `#843 → #73`, `L24 h=05` from `#243 → #13`, `L18 h=11` from `#1,612 → #72`)! Paired with our custom exact `Q4_K`/`Q6_K` GGUF CUDA kernels ([`kernels/qwen4b_gguf_ops.cu`](kernels/qwen4b_gguf_ops.cu)) and Hinge-Excess Saturated-Places `4:1` GQA ([`kernels/masullo_kv_v3_lib.cu`](kernels/masullo_kv_v3_lib.cu)):
+
+| Model & Context (`S`) | Mode | Peak Total VRAM | GPU KV vs Dense FP16 | 36L / 28L Attn | End-to-End Decode | Secret Passcode Retrieved? |
+| :--- | :--- | ---: | ---: | ---: | ---: | :--- |
+| **36L `Qwen3-4B-Instruct` @ 32K** | `indep_head_v3` (`top-256`) | `2.710 GiB` | `0.229` vs `4.50 GiB` (`19.69×`) | `29.19 ms` | `14.30 tok/s` | **YES** (`ORCHID-3819`) |
+| **36L `Qwen3-4B-Instruct` @ 32K** | **`saturated_gqa4_v3` (`4:1`)** | **`2.710 GiB`** | `0.229` vs `4.50 GiB` (`19.69×`) | **`22.19 ms` (`1.32×` faster!)** | **`16.07 tok/s`** | **YES** (`ORCHID-3819`) |
+| **36L `Qwen3-4B-Instruct` @ 64K** | `indep_head_v3` (`top-256`) | **`2.933 GiB`** | `0.457` vs **`9.00 GiB` (OOM!)** | `38.44 ms` | `13.04 tok/s` | **YES** (`KESTREL-6140`) |
+| **36L `Qwen3-4B-Instruct` @ 64K** | **`saturated_gqa4_v3` (`top-768`)** | **`2.933 GiB`** | `0.457` vs **`9.00 GiB` (OOM!)** | **`37.05 ms`** | **`13.38 tok/s`** | **YES** (`KESTREL-6140`) |
+| **36L `Qwen3-4B-Instruct` @ 128K** | **`indep_head_v3` (`top-256` = `0.195%`!)** | **`3.382 GiB`** | **`0.914` vs `18.00 GiB` (`>2.2×` GPU!)** | **`56.54 ms`** | **`10.56 tok/s`** | **YES** (`COBALT-7741`) |
+| **28L `Qwen3-0.6B` (INT8) @ 32K** | `indep_head_v3` (`top-256`) | **`1.115 GiB`** | `0.178` vs `3.50 GiB` (`19.69×`) | `15.03 ms` | `16.33 tok/s` | **YES** (`ORCHID-3819`) |
+| **28L `Qwen3-0.6B` (INT8) @ 64K** | `indep_head_v3` (`top-256`) | **`1.292 GiB`** | `0.355` vs `7.00 GiB` (`19.69×`) | `22.07 ms` | `14.13 tok/s` | **YES** (`KESTREL-6140`) |
+| **28L `Qwen3-0.6B` (INT8) @ 128K** | `indep_head_v3` (`YaRN 4.0`) | **`1.647 GiB`** (`<2 GiB`!) | `0.711` vs `14.00 GiB` (`19.69×`) | `35.81 ms` | `12.87 tok/s` | **NO** *(model-limit: even 100% exact FP16 fails on 0.6B @ 128K!)* |
+
+*Sources:* [`kernels/masullo_kv_v3_lib.cu`](kernels/masullo_kv_v3_lib.cu), [`kernels/qwen4b_gguf_ops.cu`](kernels/qwen4b_gguf_ops.cu), [`benchmarks/r4_e2e_64k_qwen4b.py`](benchmarks/r4_e2e_64k_qwen4b.py), [`benchmarks/r4_e2e_128k_qwen06b.py`](benchmarks/r4_e2e_128k_qwen06b.py), [`results/r4_masullo_v3_64k_4b.json`](results/r4_masullo_v3_64k_4b.json), [`results/r4_masullo_v3_128k_06b.json`](results/r4_masullo_v3_128k_06b.json).
+
+### Win #10 — Custom C++ `libllama.so` Unpadded Adaptive Tree + `ngram` Speculation: **`130.14 tok/s` (`2.78×`)** Fresh Prose, **`50.54 tok/s` (`1.15×`)** Reasoning, **`377.61 tok/s` (`9.54×`)** Code on Real `Qwen3-8B`!
+Writing a bare-metal C++ driver directly over `libllama.so` (`kv_unified=true`, zero HTTP/slot overhead, batched multi-`seq_id` tree expansion on `Qwen3-0.6B`, early-exit CPU top-4 softmax) smashed Round 2's `93.83 tok/s (2.03×)` record AND revealed a **new RTX 3070 decode law**: unlike cold `llama-bench pp8` (`44.1 ms`), live FlashAttention decode at `M=4..12` takes ONLY `24.5 ms/cycle` (faster than padded `M=16` `30.6 ms`). Stripping dummy padding boosted adaptive trees by **`+17.5%`** (`110.54 → 129.94 tok/s`), and logging exact `serial_top1 - serial_top2` logit margins proved every `first_diff_tok` occurred on a benign `0.00–0.04` logit FP16 GEMV-vs-MMQ tie ([`kernels/r4_tree_spec.cpp`](kernels/r4_tree_spec.cpp), [`kernels/r5_tree_spec.cpp`](kernels/r5_tree_spec.cpp), [`results/r4_tree_spec_8b.json`](results/r4_tree_spec_8b.json), [`results/r5_tree_spec_8b.json`](results/r5_tree_spec_8b.json)):
+
+| Mode (`Qwen3-8B Q4_K_M` + `Qwen3-0.6B`, 256 toks) | Fresh Prose | Hard Math Reasoning | Code Refactoring | Notes |
+| :--- | ---: | ---: | ---: | :--- |
+| Serial Baseline (`M=1`) | `46.76 tok/s` (`1.00×`) | `43.85 tok/s` (`1.00×`) | `39.58 tok/s` (`1.00×`) | `eq=TRUE` reference |
+| R4 Padded `tree16_d7_w3` | `110.54 tok/s` (`2.45×`, `5.10 t/c`) | `48.46 tok/s` (`1.11×`) | `332.94 tok/s` (`8.73×`) | `eq=TRUE` on prose; dummy pad wasted `+6 ms/cyc` |
+| **R5 `fast_linear_p50_ngram` (Unpadded)** | **`130.14 tok/s` (`2.78×`)** | `49.78 tok/s` (`1.14×`) | **`377.61 tok/s` (`9.54×`)** | `avgN=5.62` prose; `+38.7%` over R2 `llama-server`! |
+| **R5 `unpad_tree16_d8_w2` (Adaptive Tree)** | **`129.94 tok/s` (`2.78×`, `5.20 t/c`)** | `49.34 tok/s` (`1.12×`) | `349.49 tok/s` (`8.83×`) | `+17.5%` over R4 padded tree! |
+| **R5 `unpad_tree16_d6_w3` (Unified Best)** | **`127.39 tok/s` (`2.72×`, `5.10 t/c`)** | **`50.54 tok/s` (`1.15×`)** | **`375.86 tok/s` (`9.50×`)** | Beats serial & R2 across ALL 3 domains at once! |
+
+### Win #11 (Hardware Kernel Proof) + Honest Kill #10 — Zero-Sync CUDA-Graph Exact-Gate Sparse Cascade (`1.81×` Full-Layer Hardware Speedup vs Frozen SwiGLU Wall)
+We built a zero-host-sync, CUDA-Graph-capturable sparse cascade ([`kernels/r4_sparse_cascade_lib.cu`](kernels/r4_sparse_cascade_lib.cu), [`benchmarks/r4_exact_gate_cascade.py`](benchmarks/r4_exact_gate_cascade.py), [`results/r4_sparse_cascade.json`](results/r4_sparse_cascade.json)) where warp-local 16-of-32 selection after dense `W_gate` skips both `W_up` and `W_down` plus post-attention `W_o` (`~61%` of layer weights):
+* **Real CUDA-Graph Hardware Speedup (`Qwen3-8B` layer scale, `H=4096, I=12288 FP16`):** Dense `1.596 ms/layer` → `W_down`-only 50% `1.366 ms` (`1.17×`) → **Exact-Gate `W_up+W_down` 50% `0.936 ms` (`1.71×`)** → **Exact-Gate 62.5% / `+W_o` 50% `0.881–0.884 ms` (`1.81×` full-layer speedup!)**. On tiny 28-layer `Qwen3-0.6B` end-to-end CUDA Graph: `230.23 → 267.71–272.68 tok/s` (`1.16×–1.18×`).
+* **Honest Kill #10 (Frozen SwiGLU Quality):** On *frozen* `Qwen3-0.6B` (`368` sealed tokens, base PPL `12.196`), `W_down`-only 50% held **`+1.43%` PPL** (`12.371`), but skipping `W_up` using `|SiLU(g)|` alone exploded PPL by **`+81.2%`** (37.5% skip) and **`+454.6%`** (50% skip) because small `|SiLU(g)|` channels multiply huge unseen `W_up(x)` spikes. **Takeaway:** Our `1.81×` zero-sync CUDA-Graph sparse kernel is proven on silicon and ready for **ReLU² / sparsity-regularised / QAT models** (where `g = 0` literally zeroes `g * u` with `0.00%` PPL loss), but cannot skip `W_up` zero-training on frozen SwiGLU.
 
 ---
 
@@ -111,25 +149,45 @@ We compiled Masullo-Shell Sign-KV v2.1 into a live CUDA shared library ([`kernel
 
 ---
 
-## Nine Honest Kills (Published So Nobody Retraces Dead Ends)
+## Ten Honest Kills (Published So Nobody Retraces Dead Ends)
 
 1. **Post-hoc 1.125–2.5 bpw rounding on frozen `Qwen3-0.6B` (R1 + R2):** Naive 1.125–2.25 bpw collapsed NLL to `11.64–16.11`. Adding two-sided Hadamard (`H_N W H_K`) + 3–5% Bost-slope FP16 outlier columns slashed 2-bit NLL from `14.32 → 6.58` (`-7.74` NLL!), and `3-bit + 3% outliers` (`3.63 bpw`) reached `NLL = 5.28` (`top2 = 76.2%`), **but** sub-3-bit post-hoc still misses a `<+10% PPL` bar without QAT/GPTQ ([`results/track2_quality.json`](results/track2_quality.json), [`results/r2_moonshots_v2.json`](results/r2_moonshots_v2.json)).
 2. **Post-hoc 2D-FFT / Monarch-FWHT / Sign+SVD on frozen weights (R1):** All scored `0.37–0.91` cosine (`<0.95` bar) and ran slower than dense in PyTorch ([`results/track4_spectral.json`](results/track4_spectral.json)).
-3. **Naive `Qwen3-1.7B` separate draft model on prose (R1):** Added `+1.62 GiB` VRAM and slowed `Qwen3-8B` prose (`47.5 → 26.9–37.3 tok/s`). Replaced by confidence-gated `522 MB` `Qwen3-0.6B` stacked with `ngram-mod` in Win #7!
+3. **Naive `Qwen3-1.7B` separate draft model on prose (R1):** Added `+1.62 GiB` VRAM and slowed `Qwen3-8B` prose (`47.5 → 26.9–37.3 tok/s`). Replaced by confidence-gated `522 MB` `Qwen3-0.6B` stacked with `ngram-mod` in Win #7 & Win #10!
 4. **Pure unconditioned Jacobi parallel decoding (`W=8, 16`) on frozen prose (R2):** Required `61` sweeps for `64` tokens (`1.049 tok/sweep`, exact greedy match) on frozen `Qwen3-0.6B` ([`results/r2_frozen_moonshots.json`](results/r2_frozen_moonshots.json)).
 5. **Zero-training Bost-slope Layer-Skip self-drafting (R2):** Skipping `6–14` of `28` layers on frozen `Qwen3-0.6B` dropped top-1 agreement to `0.0%–19.1%` (`1.00–1.31` tree16 acceptance) ([`results/r2_frozen_moonshots.json`](results/r2_frozen_moonshots.json)).
 6. **Zero-training `gate+up` FFN pre-screening (R2):** Both 1-bit sign (`+1,189%` PPL) and activation-weighted Rank-64/128/256 SVD (`+25%` to `+260%` PPL at 40–50% skip) failed quality on frozen `Qwen3-0.6B` because `SiLU(g)*u` is sharp and full-rank — only `W_down` skipping works zero-training ([`results/r2_frozen_moonshots.json`](results/r2_frozen_moonshots.json), [`results/r2_moonshots_v2.json`](results/r2_moonshots_v2.json)).
 7. **Synchronous CPU-Ghost `0.6B` draft in `llama.cpp` (R2):** Running `Qwen3-0.6B` on the 8-core i9 (`--spec-draft-device none`, `+0 MiB` VRAM) slowed `Qwen3-8B` prose to `25.57 tok/s` (`0.55×`) because `llama.cpp` stalls GPU verification during serial CPU drafting ([`results/r2_llama_prose_v2.json`](results/r2_llama_prose_v2.json)).
 8. **`Qwen3-0.6B` drafting for `Qwen3-4B` (R2):** Slowed `Qwen3-4B` prose (`76.92 → 58.46 tok/s`, `0.76×`) because the `4B` target is already fast enough that a `0.6B` drafter lacks sufficient speed ratio ([`results/r2_llama_prose_v2.json`](results/r2_llama_prose_v2.json)).
 9. **Small Trained 2-Layer ReLU MLP Router (`R=128, 256`) for SwiGLU `gate+up` Pre-Screening (R3):** Trained across all 28 layers of `Qwen3-0.6B` on disjoint prose (`1,536` tokens), still degraded sealed PPL by `+54.7%–72.5%` at 40% skip and `+125%–128%` at 50% skip (whereas `oracle_down_only` was `-0.03%` at 40% and `+0.52%` at 50%!). Unlike ReLU models (DejaVu), frozen SwiGLU lacks hard zeros and requires ReLU-ification or QAT to pre-skip `gate+up` ([`benchmarks/r3_dejavu_ffn_router.py`](benchmarks/r3_dejavu_ffn_router.py), [`results/r3_dejavu_ffn_router.json`](results/r3_dejavu_ffn_router.json)).
+10. **Exact-Gate `W_up + W_down` Cascade on *Frozen* SwiGLU (R4):** Even using the exact dense `SiLU(W_gate(x))` output with zero proxy/router, skipping `W_up` exploded sealed frozen `Qwen3-0.6B` PPL by `+81.2%` (37.5% skip) to `+454.6%` (50% skip) because small `|SiLU(g)|` channels multiply huge unseen `W_up(x)` spikes — while our zero-sync CUDA-Graph hardware kernel proved **`1.71×–1.81×` full-layer speedup** at `8B` scale (ready for ReLU²/QAT models!) ([`kernels/r4_sparse_cascade_lib.cu`](kernels/r4_sparse_cascade_lib.cu), [`results/r4_sparse_cascade.json`](results/r4_sparse_cascade.json)).
 
 ---
 
-## Building & Running the CUDA Kernels
+## Building & Running the CUDA & C++ Kernels
 
 Tested on Linux with CUDA 12.x / 13.x on Ampere `sm_86` (change `-arch=sm_86` for your GPU):
 
 ```bash
+# Round 4 & Round 5: 19.69x Thin-VRAM v3.1 (Page-Centered Residual) + Real 36-Layer Qwen3-4B @ 128K!
+nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math -Xcompiler -fPIC -shared kernels/masullo_kv_v3_lib.cu -o libmasullo_kv_v3.so
+nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math -Xcompiler -fPIC -shared kernels/qwen4b_gguf_ops.cu -o libqwen4b_gguf.so
+MASULLO_V3_LIB=./libmasullo_kv_v3.so QWEN4B_OPS_LIB=./libqwen4b_gguf.so \
+  QWEN3_4B_INSTRUCT_GGUF=/path/to/Qwen3-4B-Instruct-2507-Q4_K_M.gguf \
+  QWEN3_TOK_JSON=/path/to/Qwen3-0.6B/tokenizer.json \
+  python3 benchmarks/r4_e2e_64k_qwen4b.py
+
+# Round 5: Custom C++ libllama.so Unpadded Adaptive Tree + Ngram Speculation (130.14 tok/s = 2.78x Fresh Prose!)
+g++ -O3 -march=native -std=c++17 kernels/r5_tree_spec.cpp \
+  -I/path/to/llama.cpp/include -I/path/to/llama.cpp/ggml/include \
+  -L/path/to/llama.cpp/build-cuda/bin -Wl,-rpath,/path/to/llama.cpp/build-cuda/bin \
+  -lllama -lggml -lggml-base -lggml-cuda -lpthread -o r5_tree_spec
+./r5_tree_spec /path/to/Qwen3-8B-Q4_K_M.gguf /path/to/Qwen3-0.6B-Q4_K_M.gguf 256
+
+# Round 4: Zero-Sync CUDA-Graph Exact-Gate Sparse Cascade (1.81x Full-Layer Hardware Proof + Honest Kill #10)
+nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math -Xcompiler -fPIC -shared kernels/r4_sparse_cascade_lib.cu -o libr4_sparse_cascade.so
+SPARSE_CASCADE_LIB=./libr4_sparse_cascade.so QWEN3_06B_DIR=/path/to/Qwen3-0.6B python3 benchmarks/r4_exact_gate_cascade.py
+
 # Round 3 Live End-to-End 64K Masullo-Shell Library + Real 28-Layer Qwen3-0.6B Needle Test
 nvcc -O3 -std=c++17 -arch=sm_86 --use_fast_math -Xcompiler -fPIC -shared kernels/masullo_kv_lib.cu -o libmasullo_kv.so
 MASULLO_LIB=./libmasullo_kv.so QWEN3_06B_DIR=/path/to/Qwen3-0.6B python3 benchmarks/r3_e2e_64k_needle.py
